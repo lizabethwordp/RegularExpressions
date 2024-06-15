@@ -1,0 +1,7 @@
+This file contains a regex for phone number needed to setup an app
+(234)
+cat
+-\d{4}
++1 (240) 398-8988
+apple
++1 (240) 398-8989

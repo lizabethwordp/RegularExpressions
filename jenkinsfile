@@ -1,0 +1,27 @@
+#integrating with a ci/cd pipeline using jenkins
+pipeline {
+    agent any
+    
+    stages {
+        stage('Line in file') {
+            steps {
+                script {
+                    def directory = "${PWD}"
+                    def regex = "\+\d{1,2}\s?\(\d{3}\)\s?\d{3}-\d{4}"
+
+                    echo "Files in directory:"
+                    sh "ls ${directory}".trim().each { file ->
+                        if (file.endsWith('.txt') && file.canRead()) {
+                            def match = sh(returnStdout: true, script: "egrep -n -m 1 '${regex}' ${file} || true").trim()
+                            if (!match.isEmpty()) {
+                                echo "${file}:"
+                                echo "match = line ${match}"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
